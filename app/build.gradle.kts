@@ -32,7 +32,9 @@ android {
 }
 
 stringFuck {
-    obfuscateWhenDebug = true
+    isPrintDebugInfo = true
+    isWorkOnDebug = true
+    isWhiteList = true
 }
 
 dependencies {
