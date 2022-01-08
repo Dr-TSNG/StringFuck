@@ -8,6 +8,8 @@ open class StringFuckOptions(@Suppress("UNUSED_PARAMETER") project: Project) {
         internal lateinit var INSTANCE: StringFuckOptions
     }
 
+    internal var key: ByteArray? = null
+
     var isPrintDebugInfo = false
 
     /**
@@ -30,4 +32,12 @@ open class StringFuckOptions(@Suppress("UNUSED_PARAMETER") project: Project) {
      * If using annotations, you can leave it empty
      */
     var obfuscationList = mutableSetOf<String>()
+
+    fun setKey(str: String) {
+        key = str.encodeToByteArray()
+    }
+
+    fun setKey(bytes: ByteArray) {
+        key = bytes
+    }
 }

@@ -35,6 +35,8 @@ stringFuck {
     isPrintDebugInfo = true
     isWorkOnDebug = true
     isWhiteList = true
+
+    setKey("test")
 }
 
 dependencies {
