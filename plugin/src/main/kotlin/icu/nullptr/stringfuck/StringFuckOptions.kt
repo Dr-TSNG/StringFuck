@@ -8,7 +8,14 @@ open class StringFuckOptions(@Suppress("UNUSED_PARAMETER") project: Project) {
         internal lateinit var INSTANCE: StringFuckOptions
     }
 
-    internal var key: ByteArray? = null
+    /**
+     * Decode key.
+     */
+    lateinit var key: ByteArray
+
+    fun setKey(str: String) {
+        key = str.encodeToByteArray()
+    }
 
     var isPrintDebugInfo = false
 
@@ -33,11 +40,18 @@ open class StringFuckOptions(@Suppress("UNUSED_PARAMETER") project: Project) {
      */
     var obfuscationList = mutableSetOf<String>()
 
-    fun setKey(str: String) {
-        key = str.encodeToByteArray()
-    }
+    /**
+     * Method to encrypt strings. This should be defined in build.gradle(.kts).
+     *
+     * Leave it null to use the default xor encryptor.
+     */
+    var encryptMethod: ((String) -> ByteArray)? = null
 
-    fun setKey(bytes: ByteArray) {
-        key = bytes
-    }
+
+    /**
+     * Classpath of the method to decrypt strings. This should be define in app src.
+     *
+     * Leave it null to use the default xor decryptor.
+     */
+    var decryptMethodClassPath: String? = null
 }

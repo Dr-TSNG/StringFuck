@@ -36,13 +36,18 @@ stringFuck {
     isWorkOnDebug = true
     isWhiteList = true
 
+    encryptMethod = { str -> str.encodeToByteArray() }
+    decryptMethodClassPath = "icu.nullptr.stringfuck.unittest.MyDecryptor"
+
     setKey("test")
 }
 
 dependencies {
+    implementation(project(":library"))
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
