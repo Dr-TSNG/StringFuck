@@ -36,10 +36,12 @@ stringFuck {
     isWorkOnDebug = true
     isWhiteList = true
 
+    obfuscationList = setOf("androidx")
+
     encryptMethod = { str -> str.encodeToByteArray() }
     decryptMethodClassPath = "icu.nullptr.stringfuck.unittest.MyDecryptor"
 
-    setKey("test")
+    setKey("nullptr")
 }
 
 dependencies {

@@ -36,9 +36,9 @@ open class StringFuckOptions(@Suppress("UNUSED_PARAMETER") project: Project) {
     /**
      * List to control strings in which classes should be obfuscated.
      *
-     * If using annotations, you can leave it empty
+     * If using annotations, you can leave it empty.
      */
-    var obfuscationList = mutableSetOf<String>()
+    var obfuscationList = setOf<String>()
 
     /**
      * Method to encrypt strings. This should be defined in build.gradle(.kts).

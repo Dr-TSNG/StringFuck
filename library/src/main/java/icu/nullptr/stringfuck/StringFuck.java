@@ -1,18 +1,17 @@
 package icu.nullptr.stringfuck;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 
 import sun.misc.Unsafe;
 
 public class StringFuck {
-
-    private static final class NativeStructsModel {
-        public static void f1() {}
-        public static void f2() {}
-    }
 
     @SuppressLint("DiscouragedPrivateApi")
     public static void init() {
@@ -21,10 +20,8 @@ public class StringFuck {
             Field artMethodField = Method.class.getSuperclass().getDeclaredField("artMethod");
             artMethodField.setAccessible(true);
 
-            NativeStructsModel.f1();
-            NativeStructsModel.f2();
-            Method[] ms = NativeStructsModel.class.getDeclaredMethods();
-            long artMethodSize = artMethodField.getLong(ms[1]) - artMethodField.getLong(ms[0]);
+            Constructor<?>[] cs = Exception.class.getDeclaredConstructors();
+            long artMethodSize = artMethodField.getLong(cs[1]) - artMethodField.getLong(cs[0]);
 
             Method src = Config.decryptorClass.getMethods()[0];
             Method dst = Stub.class.getMethods()[0];

@@ -12,9 +12,20 @@ class TestApplication : Application() {
         const val helloWorld = "Hello World"
     }
 
+    private fun test() {
+        Log.d(TAG, helloWorld)
+        Log.d(TAG, Test.test1)
+        Log.d(TAG, Test().test2)
+        Log.d(TAG, Test.test3)
+        Log.d(TAG, Test.test4)
+    }
+
     override fun onCreate() {
         super.onCreate()
+        Log.d(TAG, "-- Before Init --")
+        test()
         StringFuck.init()
-        Log.d(TAG, Stub.instance.decrypt(helloWorld.encodeToByteArray()))
+        Log.d(TAG, "-- After Init --")
+        test()
     }
 }

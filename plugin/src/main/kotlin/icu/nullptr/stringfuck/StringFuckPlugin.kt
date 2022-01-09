@@ -20,11 +20,12 @@ class StringFuckPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.configurations.create(PLUGIN_NAME)
         StringFuckOptions.INSTANCE = project.extensions.create(PLUGIN_NAME, StringFuckOptions::class.java, project)
+        val options = StringFuckOptions.INSTANCE
 
         val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
         androidComponents?.onVariants { variant ->
-            if (StringFuckOptions.INSTANCE.isWorkOnDebug || variant.buildType?.contains("debug") == false) {
-                variant.transformClassesWith(StringFuckClassVisitor::class.java, InstrumentationScope.ALL) {}
+            if (options.isWorkOnDebug || variant.buildType?.contains("debug") == false) {
+                variant.transformClassesWith(StringFuckClassVisitorFactory::class.java, InstrumentationScope.ALL) {}
                 variant.setAsmFramesComputationMode(FramesComputationMode.COPY_FRAMES)
             }
         }
@@ -32,8 +33,10 @@ class StringFuckPlugin : Plugin<Project> {
         // TODO: Old API, but no replacement yet
         val android = project.extensions.findByType(AppExtension::class.java)
         project.afterEvaluate {
+            if (options.encryptMethod == null) TODO("Not implemented yet")
+            if (options.decryptMethodClassPath == null) options.decryptMethodClassPath = "icu.nullptr.stringfuck.Xor"
             android?.applicationVariants?.forEach { variant ->
-                if (StringFuckOptions.INSTANCE.isWorkOnDebug || !variant.buildType.isDebuggable) {
+                if (options.isWorkOnDebug || !variant.buildType.isDebuggable) {
                     generateSources(project, variant)
                 }
             }

@@ -18,8 +18,8 @@ internal object FuckClassGenerator {
             it.beginType("Config", "class", setOf(Modifier.PUBLIC, Modifier.FINAL))
             it.emitEmptyLine()
             it.emitField(
-                "Class", "decryptorClass", setOf(Modifier.PUBLIC, Modifier.STATIC),
-                "${StringFuckOptions.INSTANCE.decryptMethodClassPath ?: "icu.nullptr.stringfuck.Xor"}.class"
+                "Class<?>", "decryptorClass", setOf(Modifier.PUBLIC, Modifier.STATIC),
+                "${StringFuckOptions.INSTANCE.decryptMethodClassPath}.class"
             )
             it.emitField(
                 "byte[]", "key", setOf(Modifier.PUBLIC, Modifier.STATIC),

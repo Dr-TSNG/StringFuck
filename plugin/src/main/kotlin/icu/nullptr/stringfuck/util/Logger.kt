@@ -6,10 +6,10 @@ internal object Logger {
 
     fun debug(message: String) {
         if (StringFuckOptions.INSTANCE.isPrintDebugInfo)
-            println(message)
+            println("[StringFuck] $message")
     }
 
     fun info(message: String) {
-        println(message)
+        println("[StringFuck] $message")
     }
 }
