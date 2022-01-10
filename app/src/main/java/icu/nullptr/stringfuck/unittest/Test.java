@@ -1,11 +1,12 @@
 package icu.nullptr.stringfuck.unittest;
 
+import icu.nullptr.stringfuck.Stub;
+
 public class Test {
 
-    public final static String test0 = "TEST0";
+    public static final String test0 = "TEST0";
     public static String test1 = "TEST1";
     public String test2 = "TEST2";
 
-    public final static String test3 = "TEST3";
-    public final static String test4 = "TEST4";
+    public static final String test3 = Stub.instance.decryptor.apply(new byte[]{84, 69, 83, 84, 51});
 }

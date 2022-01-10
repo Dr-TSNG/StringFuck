@@ -53,6 +53,8 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
         override fun visitCode() {
             super.visitCode()
             stringMap.forEach { (str, bytes) ->
+                visitFieldInsn(GETSTATIC, "icu/nullptr/stringfuck/Stub", "instance", "Licu/nullptr/stringfuck/Stub;")
+                visitFieldInsn(GETFIELD, "icu/nullptr/stringfuck/Stub", "decryptor", "Ljava/util/function/Function;")
                 visitIntInsn(BIPUSH, bytes.size)
                 visitIntInsn(NEWARRAY, T_BYTE)
                 for (i in bytes.indices) {
@@ -61,13 +63,14 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
                     visitIntInsn(BIPUSH, bytes[i].toInt())
                     visitInsn(BASTORE)
                 }
-                visitMethodInsn(INVOKESTATIC, "icu/nullptr/stringfuck/Stub", "decrypt", "([B)Ljava/lang/String;", false)
+                visitMethodInsn(INVOKEINTERFACE, "java/util/function/Function", "apply", "(Ljava/lang/Object;)Ljava/lang/Object;", true)
+                visitTypeInsn(CHECKCAST, "java/lang/String")
                 visitFieldInsn(PUTSTATIC, className, str, "Ljava/lang/String;")
             }
         }
 
         override fun visitMaxs(maxStack: Int, maxLocals: Int) {
-            val stringFuckMaxStack = 4
+            val stringFuckMaxStack = 5
             val stringFuckMaxLocals = 0
             super.visitMaxs(maxStack.coerceAtLeast(stringFuckMaxStack), maxLocals.coerceAtLeast(stringFuckMaxLocals))
         }
