@@ -3,30 +3,21 @@ package icu.nullptr.stringfuck;
 import android.annotation.SuppressLint;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.function.Function;
 
 import sun.misc.Unsafe;
 
 public class StringFuck {
 
+    private static final byte[] code = {0x67, 0x65, 0x74, 0x55, 0x6E, 0x73, 0x61, 0x66, 0x65};
+
     @SuppressLint("DiscouragedPrivateApi")
     public static void init() {
         try {
-            Unsafe unsafe = (Unsafe) Unsafe.class.getDeclaredMethod("getUnsafe").invoke(null);
+            Unsafe unsafe = (Unsafe) Unsafe.class.getDeclaredMethod(new String(code)).invoke(null);
             assert unsafe != null;
             Field decryptorField = Stub.class.getDeclaredFields()[0];
             long decryptorOffset = unsafe.objectFieldOffset(decryptorField);
-            Method m = Config.decryptorClass.getDeclaredMethods()[0];
-            Function<byte[], String> impl = cypherBytes -> {
-                try {
-                    return (String) m.invoke(null, (Object) cypherBytes);
-                } catch (ReflectiveOperationException e) {
-                    if (BuildConfig.DEBUG) throw new ExceptionInInitializerError(e);
-                    else return null;
-                }
-            };
-            unsafe.putObject(Stub.instance, decryptorOffset, impl);
+            unsafe.putObject(Stub.instance, decryptorOffset, Config.decryptorClass.getDeclaredMethods()[0]);
         } catch (ReflectiveOperationException e) {
             if (BuildConfig.DEBUG) throw new ExceptionInInitializerError(e);
         }

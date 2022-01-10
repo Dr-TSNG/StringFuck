@@ -5,7 +5,6 @@ import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters
 import icu.nullptr.stringfuck.code.StringFuckClassVisitor
-import icu.nullptr.stringfuck.util.Logger
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Opcodes
 
@@ -13,7 +12,6 @@ import org.objectweb.asm.Opcodes
 abstract class StringFuckClassVisitorFactory : AsmClassVisitorFactory<InstrumentationParameters> {
 
     override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
-        Logger.debug("Instrument ${classContext.currentClassData.className}")
         return StringFuckClassVisitor(Opcodes.ASM7, nextClassVisitor)
     }
 

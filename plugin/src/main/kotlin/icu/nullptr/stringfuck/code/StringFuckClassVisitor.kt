@@ -10,7 +10,8 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
     private lateinit var className: String
 
     private var visitedStaticBlock = false
-    private val stringMap = mutableMapOf<String, ByteArray>()
+    private val stringMap = mutableMapOf<String, String>()
+    private val logBuffer = mutableListOf<String>()
 
     override fun visit(version: Int, access: Int, name: String, signature: String?, superName: String?, interfaces: Array<out String>?) {
         super.visit(version, access, name, signature, superName, interfaces)
@@ -19,60 +20,69 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
 
     override fun visitField(access: Int, name: String, descriptor: String, signature: String?, value: Any?): FieldVisitor? {
         if (descriptor == "Ljava/lang/String;" && value is String) {
-            Logger.debug("Encrypt $name")
-            val encrypted = StringFuckOptions.INSTANCE.encryptMethod!!(value)
-            stringMap[name] = encrypted
+            logBuffer += "- Encrypt $name"
+            stringMap[name] = StringFuckOptions.INSTANCE.encryptMethod!!(value).decodeToString()
             return super.visitField(access, name, descriptor, signature, null)
         }
         return super.visitField(access, name, descriptor, signature, value)
     }
 
-    override fun visitMethod(access: Int, name: String, descriptor: String, signature: String?, exceptions: Array<out String>?): MethodVisitor? {
+    override fun visitMethod(access: Int, name: String, descriptor: String, signature: String?, exceptions: Array<out String>?): MethodVisitor {
         val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-        if (name == "<clinit>" && !visitedStaticBlock) {
+        return if (name == "<clinit>") {
             visitedStaticBlock = true
-            return StaticBlockMethodVisitor(mv)
+            StringFuckMethodVisitor(mv, true)
+        } else {
+            StringFuckMethodVisitor(mv, false)
         }
-        return mv
     }
 
     override fun visitEnd() {
         if (!visitedStaticBlock) {
             val mv = super.visitMethod(ACC_STATIC, "<clinit>", "()V", null, null)
-            val smv = StaticBlockMethodVisitor(mv)
+            val smv = StringFuckMethodVisitor(mv, true)
             smv.visitCode()
             smv.visitInsn(RETURN)
             smv.visitMaxs(0, 0)
             smv.visitEnd()
         }
         super.visitEnd()
+        if (logBuffer.isNotEmpty()) {
+            Logger.info("Instrument $className")
+            logBuffer.forEach { Logger.debug(it) }
+        }
     }
 
-    private inner class StaticBlockMethodVisitor(mv: MethodVisitor) : MethodVisitor(api, mv) {
+    private inner class StringFuckMethodVisitor(mv: MethodVisitor, private val clinit: Boolean) : MethodVisitor(api, mv) {
+
+        private var modified = false
+
+        private fun writeEncrypted(encrypted: String) {
+            modified = true
+            super.visitFieldInsn(GETSTATIC, "icu/nullptr/stringfuck/Stub", "instance", "Licu/nullptr/stringfuck/Stub;")
+            super.visitLdcInsn(encrypted)
+            super.visitMethodInsn(INVOKEVIRTUAL, "icu/nullptr/stringfuck/Stub", "decrypt", "(Ljava/lang/String;)Ljava/lang/String;", false)
+        }
+
+        override fun visitLdcInsn(value: Any) {
+            if (value is String) {
+                logBuffer += "- Encrypt LDC \"$value\""
+                val encrypted = StringFuckOptions.INSTANCE.encryptMethod!!(value).decodeToString()
+                writeEncrypted(encrypted)
+            } else super.visitLdcInsn(value)
+        }
 
         override fun visitCode() {
-            super.visitCode()
-            stringMap.forEach { (str, bytes) ->
-                visitFieldInsn(GETSTATIC, "icu/nullptr/stringfuck/Stub", "instance", "Licu/nullptr/stringfuck/Stub;")
-                visitFieldInsn(GETFIELD, "icu/nullptr/stringfuck/Stub", "decryptor", "Ljava/util/function/Function;")
-                visitIntInsn(BIPUSH, bytes.size)
-                visitIntInsn(NEWARRAY, T_BYTE)
-                for (i in bytes.indices) {
-                    visitInsn(DUP)
-                    visitIntInsn(BIPUSH, i)
-                    visitIntInsn(BIPUSH, bytes[i].toInt())
-                    visitInsn(BASTORE)
-                }
-                visitMethodInsn(INVOKEINTERFACE, "java/util/function/Function", "apply", "(Ljava/lang/Object;)Ljava/lang/Object;", true)
-                visitTypeInsn(CHECKCAST, "java/lang/String")
-                visitFieldInsn(PUTSTATIC, className, str, "Ljava/lang/String;")
+            if (clinit) stringMap.forEach {
+                writeEncrypted(it.value)
+                super.visitFieldInsn(PUTSTATIC, className, it.key, "Ljava/lang/String;")
             }
+            super.visitCode()
         }
 
         override fun visitMaxs(maxStack: Int, maxLocals: Int) {
-            val stringFuckMaxStack = 5
-            val stringFuckMaxLocals = 0
-            super.visitMaxs(maxStack.coerceAtLeast(stringFuckMaxStack), maxLocals.coerceAtLeast(stringFuckMaxLocals))
+            if (!modified) super.visitMaxs(maxStack, maxLocals)
+            else super.visitMaxs(maxStack.coerceAtLeast(2), maxLocals)
         }
     }
 }
