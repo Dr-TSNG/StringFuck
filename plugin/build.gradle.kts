@@ -1,5 +1,6 @@
 plugins {
     id("java-gradle-plugin")
+    id("maven-publish")
     kotlin("jvm")
 }
 
@@ -15,5 +16,17 @@ gradlePlugin {
     val stringFuck by plugins.creating {
         id = "icu.nullptr.stringfuck"
         implementationClass = "icu.nullptr.stringfuck.StringFuckPlugin"
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = rootProject.extra["pluginGroup"] as String
+            artifactId = "gradle-plugin"
+            version = rootProject.extra["pluginVersion"] as String
+
+            from(components["java"])
+        }
     }
 }

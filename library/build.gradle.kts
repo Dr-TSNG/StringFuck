@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("maven-publish")
 }
 
 val androidMinSdk: Int by rootProject.extra
@@ -19,6 +20,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -27,4 +29,18 @@ android {
 
 dependencies {
     compileOnly(project(":stub"))
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.extra["pluginGroup"] as String
+                artifactId = "library"
+                version = rootProject.extra["pluginVersion"] as String
+
+                from(components["release"])
+            }
+        }
+    }
 }
