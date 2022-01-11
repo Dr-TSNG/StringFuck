@@ -1,7 +1,6 @@
 plugins {
     id("com.vanniktech.maven.publish")
     id("com.android.library")
-    id("maven-publish")
 }
 
 val androidMinSdk: Int by rootProject.extra
@@ -18,7 +17,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            proguardFiles("proguard-rules.pro")
         }
     }
 

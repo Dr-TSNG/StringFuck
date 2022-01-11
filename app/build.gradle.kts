@@ -43,7 +43,8 @@ stringFuck {
 }
 
 dependencies {
-    implementation(project(":library"))
+    implementation("icu.nullptr.stringfuck:library:${rootProject.extra["pluginVersion"]}")
+
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
