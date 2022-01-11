@@ -24,7 +24,7 @@ pluginManagement {
 
 rootProject.name = "StringFuck"
 
-// include(":app")
+include(":app")
 include(":library")
 include(":plugin")
 include(":stub")

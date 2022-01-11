@@ -1,6 +1,6 @@
 plugins {
+    id("com.vanniktech.maven.publish")
     id("java-gradle-plugin")
-    id("maven-publish")
     kotlin("jvm")
 }
 
@@ -19,14 +19,6 @@ gradlePlugin {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = rootProject.extra["pluginGroup"] as String
-            artifactId = "gradle-plugin"
-            version = rootProject.extra["pluginVersion"] as String
-
-            from(components["java"])
-        }
-    }
+mavenPublish {
+    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
 }

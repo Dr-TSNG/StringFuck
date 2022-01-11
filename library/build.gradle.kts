@@ -1,4 +1,5 @@
 plugins {
+    id("com.vanniktech.maven.publish")
     id("com.android.library")
     id("maven-publish")
 }
@@ -31,16 +32,7 @@ dependencies {
     compileOnly(project(":stub"))
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = rootProject.extra["pluginGroup"] as String
-                artifactId = "library"
-                version = rootProject.extra["pluginVersion"] as String
-
-                from(components["release"])
-            }
-        }
-    }
+mavenPublish {
+    androidVariantToPublish = "release"
+    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
 }

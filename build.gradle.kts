@@ -6,7 +6,8 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
-        // classpath("icu.nullptr.stringfuck:gradle-plugin:0.1")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
+        classpath("icu.nullptr.stringfuck:gradle-plugin:0.1.1")
     }
 }
 
