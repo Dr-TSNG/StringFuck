@@ -2,12 +2,15 @@ plugins {
     id("com.android.library")
 }
 
+val androidMinSdk: Int by rootProject.extra
+val androidTargetSdk: Int by rootProject.extra
+
 android {
-    compileSdk = 32
+    compileSdk = androidTargetSdk
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 32
+        minSdk = androidMinSdk
+        targetSdk = androidTargetSdk
     }
 
     buildTypes {

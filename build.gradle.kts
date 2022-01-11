@@ -12,6 +12,9 @@ buildscript {
     }
 }
 
+val androidMinSdk by extra(24)
+val androidTargetSdk by extra(32)
+
 tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
 }

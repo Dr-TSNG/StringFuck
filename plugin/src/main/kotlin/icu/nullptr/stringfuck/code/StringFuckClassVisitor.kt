@@ -20,7 +20,7 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
 
     override fun visitField(access: Int, name: String, descriptor: String, signature: String?, value: Any?): FieldVisitor? {
         if (descriptor == "Ljava/lang/String;" && value is String) {
-            logBuffer += "- Encrypt $name"
+            if (StringFuckOptions.INSTANCE.isPrintDebugInfo) logBuffer += "- Encrypt $name"
             stringMap[name] = StringFuckOptions.INSTANCE.encryptMethod!!(value).decodeToString()
             return super.visitField(access, name, descriptor, signature, null)
         }
@@ -48,7 +48,7 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
         }
         super.visitEnd()
         if (logBuffer.isNotEmpty()) {
-            Logger.info("Instrument $className")
+            Logger.debug("Instrument $className")
             logBuffer.forEach { Logger.debug(it) }
         }
     }
@@ -66,7 +66,7 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
 
         override fun visitLdcInsn(value: Any) {
             if (value is String) {
-                logBuffer += "- Encrypt LDC \"$value\""
+                if (StringFuckOptions.INSTANCE.isPrintDebugInfo) logBuffer += "- Encrypt LDC \"$value\""
                 val encrypted = StringFuckOptions.INSTANCE.encryptMethod!!(value).decodeToString()
                 writeEncrypted(encrypted)
             } else super.visitLdcInsn(value)
@@ -82,7 +82,7 @@ class StringFuckClassVisitor(api: Int, cv: ClassVisitor) : ClassVisitor(api, cv)
 
         override fun visitMaxs(maxStack: Int, maxLocals: Int) {
             if (!modified) super.visitMaxs(maxStack, maxLocals)
-            else super.visitMaxs(maxStack.coerceAtLeast(2), maxLocals)
+            else super.visitMaxs((maxStack + 1).coerceAtLeast(2), maxLocals)
         }
     }
 }

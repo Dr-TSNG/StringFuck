@@ -4,13 +4,16 @@ plugins {
     kotlin("android")
 }
 
+val androidMinSdk: Int by rootProject.extra
+val androidTargetSdk: Int by rootProject.extra
+
 android {
-    compileSdk = 32
+    compileSdk = androidTargetSdk
 
     defaultConfig {
         applicationId = "icu.nullptr.stringfuck.unittest"
-        minSdk = 24
-        targetSdk = 32
+        minSdk = androidMinSdk
+        targetSdk = androidTargetSdk
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -32,7 +35,7 @@ android {
 }
 
 stringFuck {
-    isPrintDebugInfo = true
+    isPrintDebugInfo = false
     isWorkOnDebug = true
     isWhiteList = true
 

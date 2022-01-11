@@ -11,6 +11,8 @@ public final class Stub {
     private final Method decryptor;
 
     Stub() {
+        String dummy1 = _decrypt(new byte[0]);
+        String dummy2 = _decrypt(new byte[0]);
         decryptor = Stub.class.getDeclaredMethods()[0];
     }
 
@@ -24,7 +26,7 @@ public final class Stub {
 
     public String decrypt(String encrypted) {
         try {
-            return (String) decryptor.invoke(null, (Object) encrypted.getBytes(StandardCharsets.UTF_8));
+            return (String) decryptor.invoke(null, encrypted.getBytes(StandardCharsets.UTF_8));
         } catch (ReflectiveOperationException e) {
             if (BuildConfig.DEBUG) throw new ExceptionInInitializerError(e);
             else return null;

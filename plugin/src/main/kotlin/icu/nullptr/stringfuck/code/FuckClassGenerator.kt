@@ -13,10 +13,10 @@ internal object FuckClassGenerator {
         JavaWriter(FileWriter(configFile)).use {
             it.indent = "    "
             it.emitPackage("icu.nullptr.stringfuck")
-            it.emitEmptyLine()
 
             it.beginType("Config", "class", setOf(Modifier.PUBLIC, Modifier.FINAL))
             it.emitEmptyLine()
+
             it.emitField(
                 "Class<?>", "decryptorClass", setOf(Modifier.PUBLIC, Modifier.STATIC),
                 "${StringFuckOptions.INSTANCE.decryptMethodClassPath}.class"
@@ -25,6 +25,12 @@ internal object FuckClassGenerator {
                 "byte[]", "key", setOf(Modifier.PUBLIC, Modifier.STATIC),
                 "{${StringFuckOptions.INSTANCE.key.joinToString(",")}}"
             )
+
+            it.beginInitializer(true)
+            it.emitStatement("${StringFuckOptions.INSTANCE.decryptMethodClassPath}.decrypt(new byte[0])")
+            it.emitStatement("${StringFuckOptions.INSTANCE.decryptMethodClassPath}.decrypt(new byte[0])")
+            it.endInitializer()
+
             it.endType()
         }
     }
