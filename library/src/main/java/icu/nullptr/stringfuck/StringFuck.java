@@ -18,6 +18,7 @@ public class StringFuck {
             Field decryptorField = Stub.class.getDeclaredFields()[0];
             long decryptorOffset = unsafe.objectFieldOffset(decryptorField);
             unsafe.putObject(Stub.instance, decryptorOffset, Config.decryptorClass.getDeclaredMethods()[0]);
+        } catch (NoClassDefFoundError ignored) {
         } catch (ReflectiveOperationException e) {
             if (BuildConfig.DEBUG) throw new ExceptionInInitializerError(e);
         }

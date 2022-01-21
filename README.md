@@ -15,6 +15,7 @@
 + 只支持 AGP 7+
 + 支持 API 24-32
 + 防一键解密（目前很简陋，人工还是容易找到解密类）
++ 低侵入性，只需在启动时调用一行初始化语句
 
 ### 使用方法
 
@@ -22,7 +23,7 @@
 
 ```kotlin
 buildscript {
-    val stringFuckVersion by extra("0.1.2")
+    val stringFuckVersion by extra("0.1.3")
     dependencies {
         classpath("icu.nullptr.stringfuck:gradle-plugin:$stringFuckVersion")
     }
