@@ -5,9 +5,9 @@ buildscript {
         mavenLocal()
     }
     @Suppress("UNUSED_VARIABLE")
-    val pluginVersion by extra("0.1.3")
+    val pluginVersion by extra("0.1.4")
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.android.tools.build:gradle:7.1.1")
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
         classpath("icu.nullptr.stringfuck:gradle-plugin:$pluginVersion")
     }

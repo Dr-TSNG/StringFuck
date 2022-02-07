@@ -11,7 +11,7 @@ class PreInitTest {
 
     @Test
     fun preInitTest() {
-        Assert.assertNotEquals(TestStrings.test0, "TEST0")
+        Assert.assertNotEquals(TestStrings::class.java.getField("test0").get(null), "TEST0")
         Assert.assertNotEquals(TestStrings.test1, "TEST1")
         Assert.assertNotEquals(TestStrings().test2, "TEST2")
         Assert.assertNotEquals(TestStrings.functionTest1(), "TEST3")
@@ -25,7 +25,7 @@ class PostInitTest {
     @Test
     fun postInitTest() {
         StringFuck.init()
-        Assert.assertEquals(TestStrings.test0, "TEST0")
+        Assert.assertEquals(TestStrings::class.java.getField("test0").get(null), "TEST0")
         Assert.assertEquals(TestStrings.test1, "TEST1")
         Assert.assertEquals(TestStrings().test2, "TEST2")
         Assert.assertEquals(TestStrings.functionTest1(), "TEST3")

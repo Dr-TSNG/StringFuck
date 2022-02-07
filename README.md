@@ -23,7 +23,7 @@
 
 ```kotlin
 buildscript {
-    val stringFuckVersion by extra("0.1.3")
+    val stringFuckVersion by extra("0.1.4")
     dependencies {
         classpath("icu.nullptr.stringfuck:gradle-plugin:$stringFuckVersion")
     }
