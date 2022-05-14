@@ -20,28 +20,13 @@
 
 ### 使用方法
 
-##### Root project
-
 ```kotlin
-buildscript {
-    val stringFuckVersion by extra("0.1.4")
-    dependencies {
-        classpath("icu.nullptr.stringfuck:gradle-plugin:$stringFuckVersion")
-    }
-}
-```
-
-##### App
-
-```kotlin
-val stringFuckVersion: String by rootProject.extra
-
 plugins {
-    id("icu.nullptr.stringfuck")
+    id("icu.nullptr.stringfuck") version "0.2.0"
 }
 
 dependencies {
-    implementation("icu.nullptr.stringfuck:library:$stringFuckVersion")
+    implementation("icu.nullptr.stringfuck:library:0.2.0")
 }
 
 stringFuck {

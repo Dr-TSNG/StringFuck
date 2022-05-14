@@ -30,8 +30,3 @@ android {
 dependencies {
     compileOnly(project(":stub"))
 }
-
-mavenPublish {
-    androidVariantToPublish = "release"
-    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
-}

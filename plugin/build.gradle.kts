@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.1.1")
-    implementation("com.android.tools.build:gradle-api:7.1.1")
+    implementation("com.android.tools.build:gradle:7.1.3")
+    implementation("com.android.tools.build:gradle-api:7.1.3")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
@@ -17,8 +17,4 @@ gradlePlugin {
         id = "icu.nullptr.stringfuck"
         implementationClass = "icu.nullptr.stringfuck.StringFuckPlugin"
     }
-}
-
-mavenPublish {
-    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
 }

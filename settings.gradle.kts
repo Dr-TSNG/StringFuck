@@ -12,14 +12,17 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        mavenLocal()
     }
-    val agpVersion = "7.0.4"
-    val kotlinVersion = "1.6.0"
+    val agpVersion = "7.1.3"
+    val kotlinVersion = "1.6.21"
     plugins {
-        id("org.jetbrains.kotlin.android") version kotlinVersion
-        id("org.jetbrains.kotlin.jvm") version kotlinVersion
+        kotlin("android") version kotlinVersion
+        kotlin("jvm") version kotlinVersion
         id("com.android.application") version agpVersion
         id("com.android.library") version agpVersion
+        id("com.vanniktech.maven.publish") version "0.19.0"
+        id("icu.nullptr.stringfuck") version "0.2.0"
     }
 }
 

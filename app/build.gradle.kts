@@ -37,16 +37,13 @@ android {
 stringFuck {
     isPrintDebugInfo = false
     isWorkOnDebug = true
-    isWhiteList = true
 
     setKey("nullptr")
+    obfuscationList = setOf("icu.nullptr")
 }
 
 dependencies {
-    implementation("icu.nullptr.stringfuck:library:${rootProject.extra["pluginVersion"]}")
-
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("icu.nullptr.stringfuck:library:$version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
