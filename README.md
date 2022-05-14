@@ -2,7 +2,7 @@
 
 ## Yet Another String Obfuscator for Android
 
-![MavenCentral](https://img.shields.io/maven-central/v/icu.nullptr.stringfuck/gradle-plugin)
+![MavenCentral](https://img.shields.io/maven-central/v/icu.nullptr.stringfuck/icu.nullptr.stringfuck.gradle.plugin)
 
 一个字符串混淆器，旨在防止被jadx、MT等工具一键解密
 
