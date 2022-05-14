@@ -1,6 +1,8 @@
 plugins {
-    id("com.vanniktech.maven.publish")
-    id("java-gradle-plugin")
+    java
+    `java-gradle-plugin`
+    `maven-publish`
+    signing
     kotlin("jvm")
 }
 
@@ -12,14 +14,23 @@ dependencies {
 }
 
 gradlePlugin {
-    @Suppress("UNUSED_VARIABLE")
-    val stringFuck by plugins.creating {
-        id = "icu.nullptr.stringfuck"
-        implementationClass = "icu.nullptr.stringfuck.StringFuckPlugin"
+    plugins.create("stringFuck") {
+        id = project.group as String
+        displayName = "StringFuck"
+        description = "Yet Another String Obfuscator for Android"
+        implementationClass = "$group.StringFuckPlugin"
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+afterEvaluate {
+    publishing {
+        publications {
+            named("pluginMaven", MavenPublication::class) {
+                artifactId = project.name
+
+                artifact(tasks["sourcesJar"])
+                artifact(tasks["javadocJar"])
+            }
+        }
+    }
 }

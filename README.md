@@ -4,7 +4,7 @@
 
 ![MavenCentral](https://img.shields.io/maven-central/v/icu.nullptr.stringfuck/icu.nullptr.stringfuck.gradle.plugin)
 
-一个字符串混淆器，旨在防止被jadx、MT等工具一键解密
+一个字符串混淆器，旨在防止被 jadx、MT 等工具一键解密
 
 目前还很简陋，只能简单骗过反编译器（毕竟纯 Java）
 
@@ -22,11 +22,11 @@
 
 ```kotlin
 plugins {
-    id("icu.nullptr.stringfuck") version "0.2.1"
+    id("icu.nullptr.stringfuck") version "0.2.2"
 }
 
 dependencies {
-    implementation("icu.nullptr.stringfuck:library:0.2.1")
+    implementation("icu.nullptr.stringfuck:library:0.2.2")
 }
 
 stringFuck {

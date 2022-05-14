@@ -28,8 +28,7 @@ public final class Stub {
         try {
             return (String) decryptor.invoke(null, encrypted.getBytes(StandardCharsets.UTF_8));
         } catch (ReflectiveOperationException e) {
-            if (BuildConfig.DEBUG) throw new ExceptionInInitializerError(e);
-            else return null;
+            return null;
         }
     }
 }

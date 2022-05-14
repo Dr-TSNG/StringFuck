@@ -20,9 +20,7 @@ pluginManagement {
         kotlin("android") version kotlinVersion
         kotlin("jvm") version kotlinVersion
         id("com.android.application") version agpVersion
-        id("com.android.library") version agpVersion
-        id("com.vanniktech.maven.publish") version "0.19.0"
-        id("icu.nullptr.stringfuck") version "0.2.1"
+        id("icu.nullptr.stringfuck") version "0.2.2"
     }
 }
 
