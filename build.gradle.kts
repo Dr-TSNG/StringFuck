@@ -29,7 +29,7 @@ tasks.register("publishLocal") {
 
 subprojects {
     group = "icu.nullptr.stringfuck"
-    version = "0.2.0"
+    version = "0.2.1"
 
     plugins.withId("com.vanniktech.maven.publish") {
         extensions.findByType(SigningExtension::class.java)!!.run {

@@ -22,7 +22,7 @@ pluginManagement {
         id("com.android.application") version agpVersion
         id("com.android.library") version agpVersion
         id("com.vanniktech.maven.publish") version "0.19.0"
-        id("icu.nullptr.stringfuck") version "0.2.0"
+        id("icu.nullptr.stringfuck") version "0.2.1"
     }
 }
 

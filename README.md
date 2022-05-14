@@ -22,11 +22,11 @@
 
 ```kotlin
 plugins {
-    id("icu.nullptr.stringfuck") version "0.2.0"
+    id("icu.nullptr.stringfuck") version "0.2.1"
 }
 
 dependencies {
-    implementation("icu.nullptr.stringfuck:library:0.2.0")
+    implementation("icu.nullptr.stringfuck:library:0.2.1")
 }
 
 stringFuck {
