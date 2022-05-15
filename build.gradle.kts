@@ -1,4 +1,3 @@
-import com.android.build.gradle.BaseExtension
 import org.gradle.plugins.signing.SigningExtension
 
 buildscript {
@@ -8,7 +7,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.1.3")
+        classpath("com.android.tools.build:gradle:7.2.0")
     }
 }
 
@@ -26,7 +25,7 @@ tasks.register("publishLocal") {
 
 subprojects {
     group = "icu.nullptr.stringfuck"
-    version = "0.2.2"
+    version = "0.3"
 
     plugins.withId("java") {
         extensions.configure<JavaPluginExtension> {

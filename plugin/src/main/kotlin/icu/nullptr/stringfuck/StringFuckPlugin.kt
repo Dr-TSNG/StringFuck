@@ -1,11 +1,11 @@
 package icu.nullptr.stringfuck
 
+import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
-import icu.nullptr.stringfuck.code.FuckClassGenerator
+import com.android.build.api.variant.Variant
+import icu.nullptr.stringfuck.code.ClassGeneratorTask
 import icu.nullptr.stringfuck.util.Encryptors
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,32 +26,23 @@ class StringFuckPlugin : Plugin<Project> {
         val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
         androidComponents?.onVariants { variant ->
             if (options.isWorkOnDebug || variant.buildType?.contains("debug") == false) {
-                variant.transformClassesWith(StringFuckClassVisitorFactory::class.java, InstrumentationScope.ALL) {}
-                variant.setAsmFramesComputationMode(FramesComputationMode.COPY_FRAMES)
+                variant.instrumentation.transformClassesWith(StringFuckClassVisitorFactory::class.java, InstrumentationScope.ALL) {}
+                variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COPY_FRAMES)
+                generateSources(project, variant)
             }
         }
 
-        // TODO: Old API, but no replacement yet
-        val android = project.extensions.findByType(AppExtension::class.java)
         project.afterEvaluate {
             if (options.encryptMethod == null) options.encryptMethod = Encryptors.xor
             if (options.decryptMethodClassPath == null) options.decryptMethodClassPath = "icu.nullptr.stringfuck.Xor"
-            android?.applicationVariants?.forEach { variant ->
-                if (options.isWorkOnDebug || !variant.buildType.isDebuggable) {
-                    generateSources(project, variant)
-                }
-            }
         }
     }
 
-    private fun generateSources(project: Project, variant: ApplicationVariant) {
-        val variantCapped = variant.name.capitalize(Locale.ROOT)
-        val sourceDir = project.buildDir.resolve("generated/source/stringFuck/icu/nullptr")
-        val generateTask = project.tasks.create("generate${variantCapped}StringFuckSources").doLast {
-            sourceDir.mkdirs()
-            FuckClassGenerator.generate(sourceDir)
-        }
-
-        variant.registerJavaGeneratingTask(generateTask, sourceDir)
+    private fun generateSources(project: Project, variant: Variant) {
+        val variantCapped = variant.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+        val generateTaskProvider = project.tasks.register("generate${variantCapped}StringFuckSources", ClassGeneratorTask::class.java)
+        variant.artifacts.use(generateTaskProvider)
+            .wiredWith(ClassGeneratorTask::output)
+            .toAppendTo(MultipleArtifact.ALL_CLASSES_DIRS)
     }
 }

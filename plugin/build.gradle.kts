@@ -7,8 +7,9 @@ plugins {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.1.3")
-    implementation("com.android.tools.build:gradle-api:7.1.3")
+    implementation("com.android.tools.build:gradle:7.2.0")
+    implementation("com.android.tools.build:gradle-api:7.2.0")
+    implementation("org.javassist:javassist:3.27.0-GA")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
